@@ -1,0 +1,3 @@
+[submodule "libcap-ng"]
+	path = libcap-ng
+	url = https://github.com/stevegrubb/libcap-ng.git
