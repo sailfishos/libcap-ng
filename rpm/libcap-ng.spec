@@ -75,30 +75,36 @@ lets you set the file system based capabilities.
 make CFLAGS="%{optflags}" %{?_smp_mflags}
 
 %install
+rm -rf ${RPM_BUILD_ROOT}
 make DESTDIR="${RPM_BUILD_ROOT}" INSTALL='install -p' install
 
 # Move the symlink
-rm -f $RPM_BUILD_ROOT/%{_lib}/%{name}.so
-mkdir -p $RPM_BUILD_ROOT%{_libdir}
-VLIBNAME=$(ls $RPM_BUILD_ROOT/%{_lib}/%{name}.so.*.*.*)
+rm -f ${RPM_BUILD_ROOT}/%{_lib}/%{name}.so
+mkdir -p ${RPM_BUILD_ROOT}%{_libdir}
+VLIBNAME=$(ls ${RPM_BUILD_ROOT}/%{_lib}/%{name}.so.*.*.*)
 LIBNAME=$(basename $VLIBNAME)
-ln -s ../../%{_lib}/$LIBNAME $RPM_BUILD_ROOT%{_libdir}/%{name}.so
+ln -s ../../%{_lib}/$LIBNAME ${RPM_BUILD_ROOT}%{_libdir}/%{name}.so
 
 # Move the pkgconfig file
-mv $RPM_BUILD_ROOT/%{_lib}/pkgconfig $RPM_BUILD_ROOT%{_libdir}
+mv ${RPM_BUILD_ROOT}/%{_lib}/pkgconfig ${RPM_BUILD_ROOT}%{_libdir}
 
 # Remove a couple things so they don't get picked up
-rm -f $RPM_BUILD_ROOT/%{_lib}/libcap-ng.la
-rm -f $RPM_BUILD_ROOT/%{_lib}/libcap-ng.a
-rm -f $RPM_BUILD_ROOT/%{_libdir}/python?.?/site-packages/_capng.a
-rm -f $RPM_BUILD_ROOT/%{_libdir}/python?.?/site-packages/_capng.la
+rm -f ${RPM_BUILD_ROOT}/%{_lib}/libcap-ng.la
+rm -f ${RPM_BUILD_ROOT}/%{_lib}/libcap-ng.a
+rm -f ${RPM_BUILD_ROOT}/%{_libdir}/python?.?/site-packages/_capng.a
+rm -f ${RPM_BUILD_ROOT}/%{_libdir}/python?.?/site-packages/_capng.la
+
+# Remove python2.7 files
+rm -f ${RPM_BUILD_ROOT}/%{_libdir}/python2.7/site-packages/*
 
 %check
 # test fails due to wrong linking path to shared libs. hopefully ok otherwise
-#make check
+make check
 
-%post
-/sbin/ldconfig
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%post -p /sbin/ldconfig
 
 %postun -p /sbin/ldconfig
 
@@ -120,5 +126,6 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/python?.?/site-packages/_capng.la
 
 %files utils
 %doc LICENSE
+%doc COPYING
 %attr(0755,root,root) %{_bindir}/*
 %attr(0644,root,root) %{_mandir}/man8/*
