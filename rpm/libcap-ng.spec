@@ -27,7 +27,7 @@
 Summary: An alternate posix capabilities library
 Name: libcap-ng
 Version: 0.7.9
-Release: 1%{?dist}
+Release: 1
 License: LGPLv2+
 URL: http://people.redhat.com/sgrubb/libcap-ng
 Source: %{name}-%{version}.tar.bz2
