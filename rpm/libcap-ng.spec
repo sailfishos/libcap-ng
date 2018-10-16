@@ -73,26 +73,16 @@ lets you set the file system based capabilities.
 
 %build
 ./autogen.sh
-%configure --libdir=/%{_lib} --with-python3
+%configure --libdir=/%{_libdir} --with-python3
 make CFLAGS="%{optflags}" %{?_smp_mflags}
 
 %install
 rm -rf ${RPM_BUILD_ROOT}
 make DESTDIR="${RPM_BUILD_ROOT}" INSTALL='install -p' install
 
-# Move the symlink
-rm -f ${RPM_BUILD_ROOT}/%{_lib}/%{name}.so
-mkdir -p ${RPM_BUILD_ROOT}%{_libdir}
-VLIBNAME=$(ls ${RPM_BUILD_ROOT}/%{_lib}/%{name}.so.*.*.*)
-LIBNAME=$(basename $VLIBNAME)
-ln -s ../../%{_lib}/$LIBNAME ${RPM_BUILD_ROOT}%{_libdir}/%{name}.so
-
-# Move the pkgconfig file
-mv ${RPM_BUILD_ROOT}/%{_lib}/pkgconfig ${RPM_BUILD_ROOT}%{_libdir}
-
 # Remove a couple things so they don't get picked up
-rm -f ${RPM_BUILD_ROOT}/%{_lib}/libcap-ng.la
-rm -f ${RPM_BUILD_ROOT}/%{_lib}/libcap-ng.a
+rm -f ${RPM_BUILD_ROOT}/%{_libdir}/libcap-ng.la
+rm -f ${RPM_BUILD_ROOT}/%{_libdir}/libcap-ng.a
 rm -f ${RPM_BUILD_ROOT}/%{_libdir}/python?.?/site-packages/_capng.a
 rm -f ${RPM_BUILD_ROOT}/%{_libdir}/python?.?/site-packages/_capng.la
 
@@ -117,7 +107,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %doc LICENSE
 %doc COPYING.LIB
-/%{_lib}/libcap-ng.so.*
+/%{_libdir}/libcap-ng.so.*
 
 %files devel
 %attr(0644,root,root) %{_mandir}/man3/*
