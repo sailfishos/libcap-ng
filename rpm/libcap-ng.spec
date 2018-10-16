@@ -34,6 +34,8 @@ Source: %{name}-%{version}.tar.bz2
 BuildRequires: kernel-headers >= 2.6.11 
 BuildRequires: libattr-devel
 BuildRequires: automake autoconf libtool
+BuildRequires: python
+BuildRequires: python3-base
 
 %description
 Libcap-ng is a library that makes using posix capabilities easier
@@ -90,12 +92,7 @@ rm -f ${RPM_BUILD_ROOT}/%{_libdir}/python?.?/site-packages/_capng.la
 rm -f ${RPM_BUILD_ROOT}/%{_libdir}/python2.7/site-packages/*
 
 %check
-# test fails due to wrong linking path to shared libs. hopefully ok otherwise
-# ^^ Comment from Oliver. Binding test fails in OBS for reason unknown
-# TODO: investigate the reason and fix (perhaps with a patch).
-make check || true
-cat bindings/python/test/test-suite.log
-cat bindings/python/test/capng-test.py.log
+make check
 
 %clean
 rm -rf $RPM_BUILD_ROOT
