@@ -34,7 +34,6 @@ Source: %{name}-%{version}.tar.bz2
 BuildRequires: kernel-headers >= 2.6.11 
 BuildRequires: libattr-devel
 BuildRequires: automake autoconf libtool
-BuildRequires: python
 BuildRequires: python3-base
 
 %description
@@ -75,7 +74,7 @@ lets you set the file system based capabilities.
 
 %build
 ./autogen.sh
-%configure --libdir=/%{_libdir} --with-python3
+%configure --libdir=/%{_libdir} --without-python --with-python3
 make CFLAGS="%{optflags}" %{?_smp_mflags}
 
 %install
