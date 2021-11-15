@@ -26,7 +26,7 @@
 
 Summary: An alternate posix capabilities library
 Name: libcap-ng
-Version: 0.7.9
+Version: 0.8.2
 Release: 1
 License: LGPLv2+
 URL: http://people.redhat.com/sgrubb/libcap-ng
@@ -41,7 +41,6 @@ Libcap-ng is a library that makes using posix capabilities easier
 
 %package devel
 Summary: Header files for libcap-ng library
-License: LGPLv2+
 Requires: kernel-headers >= 2.6.11
 Requires: %{name} = %{version}-%{release}
 Requires: pkgconfig
@@ -51,7 +50,6 @@ The libcap-ng-devel package contains the files needed for developing
 applications that need to use the libcap-ng library.
 %package python3
 Summary: Python3 bindings for libcap-ng library
-License: LGPLv2+
 BuildRequires: python3-devel swig
 Requires: %{name} = %{version}-%{release}
 
@@ -70,16 +68,16 @@ posix capabilities of all the program running on a system. It also
 lets you set the file system based capabilities.
 
 %prep
-%setup -q -n %{name}-%{version}/%{name}
+%autosetup -p1 -n %{name}-%{version}/%{name}
 
 %build
 ./autogen.sh
 %configure --libdir=/%{_libdir} --without-python --with-python3
-make CFLAGS="%{optflags}" %{?_smp_mflags}
+%make_build
 
 %install
 rm -rf ${RPM_BUILD_ROOT}
-make DESTDIR="${RPM_BUILD_ROOT}" INSTALL='install -p' install
+%make_install
 
 # Remove a couple things so they don't get picked up
 rm -f ${RPM_BUILD_ROOT}/%{_libdir}/libcap-ng.la
@@ -101,8 +99,8 @@ rm -rf $RPM_BUILD_ROOT
 %postun -p /sbin/ldconfig
 
 %files
-%doc LICENSE
-%doc COPYING.LIB
+%license LICENSE
+%license COPYING.LIB
 /%{_libdir}/libcap-ng.so.*
 
 %files devel
@@ -117,7 +115,7 @@ rm -rf $RPM_BUILD_ROOT
 %{python3_sitearch}/capng.py*
 
 %files utils
-%doc LICENSE
-%doc COPYING
+%license COPYING
 %attr(0755,root,root) %{_bindir}/*
+%attr(0644,root,root) %{_mandir}/man7/*
 %attr(0644,root,root) %{_mandir}/man8/*
