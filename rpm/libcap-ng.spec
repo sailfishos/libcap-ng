@@ -20,13 +20,9 @@
 # TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-%if ! %{defined python3_sitearch}
-%define python3_sitearch /%{_libdir}/python3.?/site-packages
-%endif
-
 Summary: An alternate posix capabilities library
 Name: libcap-ng
-Version: 0.8.2
+Version: 0.8.3
 Release: 1
 License: LGPLv2+
 URL: http://people.redhat.com/sgrubb/libcap-ng
@@ -72,41 +68,40 @@ lets you set the file system based capabilities.
 
 %build
 ./autogen.sh
-%configure --libdir=/%{_libdir} --without-python --with-python3
+%configure --libdir=/%{_libdir} --with-python=no --with-python3
 %make_build
 
 %install
-rm -rf ${RPM_BUILD_ROOT}
 %make_install
 
 # Remove a couple things so they don't get picked up
-rm -f ${RPM_BUILD_ROOT}/%{_libdir}/libcap-ng.la
-rm -f ${RPM_BUILD_ROOT}/%{_libdir}/libcap-ng.a
-rm -f ${RPM_BUILD_ROOT}/%{_libdir}/python?.?/site-packages/_capng.a
-rm -f ${RPM_BUILD_ROOT}/%{_libdir}/python?.?/site-packages/_capng.la
+rm -f $RPM_BUILD_ROOT%{_libdir}/libcap-ng.la
+rm -f $RPM_BUILD_ROOT%{_libdir}/libcap-ng.a
+rm -f $RPM_BUILD_ROOT%{_libdir}/libdrop_ambient.la
+rm -f $RPM_BUILD_ROOT%{_libdir}/libdrop_ambient.a
+rm -f $RPM_BUILD_ROOT%{_libdir}/python%{python3_version}/site-packages/_capng.a
+rm -f $RPM_BUILD_ROOT%{_libdir}/python%{python3_version}/site-packages/_capng.la
 
-# Remove python2.7 files
-rm -f ${RPM_BUILD_ROOT}/%{_libdir}/python2.7/site-packages/*
 
 %check
 make check
 
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 %post -p /sbin/ldconfig
 
 %postun -p /sbin/ldconfig
 
 %files
-%license LICENSE
 %license COPYING.LIB
-/%{_libdir}/libcap-ng.so.*
+%{_libdir}/libcap-ng.so.*
+%{_libdir}/libdrop_ambient.so.*
+%attr(0644,root,root) %{_mandir}/man7/*
 
 %files devel
 %attr(0644,root,root) %{_mandir}/man3/*
 %attr(0644,root,root) %{_includedir}/cap-ng.h
 %{_libdir}/libcap-ng.so
+%{_libdir}/libdrop_ambient.so
 %attr(0644,root,root) %{_datadir}/aclocal/cap-ng.m4
 %{_libdir}/pkgconfig/libcap-ng.pc
 
@@ -117,5 +112,4 @@ rm -rf $RPM_BUILD_ROOT
 %files utils
 %license COPYING
 %attr(0755,root,root) %{_bindir}/*
-%attr(0644,root,root) %{_mandir}/man7/*
 %attr(0644,root,root) %{_mandir}/man8/*
