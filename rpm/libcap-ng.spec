@@ -94,14 +94,14 @@ make check
 %files
 %license COPYING.LIB
 %{_libdir}/libcap-ng.so.*
-%{_libdir}/libdrop_ambient.so.*
+#%%{_libdir}/libdrop_ambient.so.*
 %attr(0644,root,root) %{_mandir}/man7/*
 
 %files devel
 %attr(0644,root,root) %{_mandir}/man3/*
 %attr(0644,root,root) %{_includedir}/cap-ng.h
 %{_libdir}/libcap-ng.so
-%{_libdir}/libdrop_ambient.so
+#%%{_libdir}/libdrop_ambient.so
 %attr(0644,root,root) %{_datadir}/aclocal/cap-ng.m4
 %{_libdir}/pkgconfig/libcap-ng.pc
 
