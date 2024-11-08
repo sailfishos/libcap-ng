@@ -25,7 +25,7 @@ Name: libcap-ng
 Version: 0.8.3
 Release: 1
 License: LGPLv2+
-URL: http://people.redhat.com/sgrubb/libcap-ng
+URL: https://github.com/sailfishos/libcap-ng
 Source: %{name}-%{version}.tar.bz2
 BuildRequires: kernel-headers >= 2.6.11 
 BuildRequires: libattr-devel
@@ -95,21 +95,20 @@ make check
 %license COPYING.LIB
 %{_libdir}/libcap-ng.so.*
 #%%{_libdir}/libdrop_ambient.so.*
-%attr(0644,root,root) %{_mandir}/man7/*
+%{_mandir}/man7/*
 
 %files devel
-%attr(0644,root,root) %{_mandir}/man3/*
-%attr(0644,root,root) %{_includedir}/cap-ng.h
+%{_mandir}/man3/*
+%{_includedir}/cap-ng.h
 %{_libdir}/libcap-ng.so
 #%%{_libdir}/libdrop_ambient.so
-%attr(0644,root,root) %{_datadir}/aclocal/cap-ng.m4
+%{_datadir}/aclocal/cap-ng.m4
 %{_libdir}/pkgconfig/libcap-ng.pc
 
 %files python3
 %attr(755,root,root) %{python3_sitearch}/*
-%{python3_sitearch}/capng.py*
 
 %files utils
 %license COPYING
-%attr(0755,root,root) %{_bindir}/*
-%attr(0644,root,root) %{_mandir}/man8/*
+%{_bindir}/*
+%{_mandir}/man8/*
