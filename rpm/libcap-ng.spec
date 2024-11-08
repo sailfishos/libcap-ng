@@ -81,7 +81,7 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/libdrop_ambient.la
 rm -f $RPM_BUILD_ROOT%{_libdir}/libdrop_ambient.a
 rm -f $RPM_BUILD_ROOT%{_libdir}/python%{python3_version}/site-packages/_capng.a
 rm -f $RPM_BUILD_ROOT%{_libdir}/python%{python3_version}/site-packages/_capng.la
-
+rm -f $RPM_BUILD_ROOT%{_mandir}/man7/libdrop_ambient.*
 
 %check
 make check
@@ -94,14 +94,13 @@ make check
 %files
 %license COPYING.LIB
 %{_libdir}/libcap-ng.so.*
-#%%{_libdir}/libdrop_ambient.so.*
-%{_mandir}/man7/*
+%{_libdir}/libdrop_ambient.so.*
 
 %files devel
 %{_mandir}/man3/*
 %{_includedir}/cap-ng.h
 %{_libdir}/libcap-ng.so
-#%%{_libdir}/libdrop_ambient.so
+%{_libdir}/libdrop_ambient.so
 %{_datadir}/aclocal/cap-ng.m4
 %{_libdir}/pkgconfig/libcap-ng.pc
 
