@@ -22,12 +22,15 @@
 
 Summary: An alternate posix capabilities library
 Name: libcap-ng
-Version: 0.8.3
+Version: 0.8.5
 Release: 1
 License: LGPLv2+
 URL: https://github.com/sailfishos/libcap-ng
 Source: %{name}-%{version}.tar.bz2
-BuildRequires: kernel-headers >= 2.6.11 
+
+Patch1: 0001-Fix-python-path-when-invoking-py-compile-54.patch
+
+BuildRequires: kernel-headers >= 2.6.11
 BuildRequires: libattr-devel
 BuildRequires: automake autoconf libtool
 BuildRequires: python3-base
