@@ -22,12 +22,15 @@
 
 Summary: An alternate posix capabilities library
 Name: libcap-ng
-Version: 0.8.3
+Version: 0.8.5
 Release: 1
 License: LGPLv2+
-URL: http://people.redhat.com/sgrubb/libcap-ng
+URL: https://github.com/sailfishos/libcap-ng
 Source: %{name}-%{version}.tar.bz2
-BuildRequires: kernel-headers >= 2.6.11 
+
+Patch1: 0001-Fix-python-path-when-invoking-py-compile-54.patch
+
+BuildRequires: kernel-headers >= 2.6.11
 BuildRequires: libattr-devel
 BuildRequires: automake autoconf libtool
 BuildRequires: python3-base
@@ -81,7 +84,7 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/libdrop_ambient.la
 rm -f $RPM_BUILD_ROOT%{_libdir}/libdrop_ambient.a
 rm -f $RPM_BUILD_ROOT%{_libdir}/python%{python3_version}/site-packages/_capng.a
 rm -f $RPM_BUILD_ROOT%{_libdir}/python%{python3_version}/site-packages/_capng.la
-
+rm -f $RPM_BUILD_ROOT%{_mandir}/man7/libdrop_ambient.*
 
 %check
 make check
@@ -94,22 +97,20 @@ make check
 %files
 %license COPYING.LIB
 %{_libdir}/libcap-ng.so.*
-#%%{_libdir}/libdrop_ambient.so.*
-%attr(0644,root,root) %{_mandir}/man7/*
+%{_libdir}/libdrop_ambient.so.*
 
 %files devel
-%attr(0644,root,root) %{_mandir}/man3/*
-%attr(0644,root,root) %{_includedir}/cap-ng.h
+%{_mandir}/man3/*
+%{_includedir}/cap-ng.h
 %{_libdir}/libcap-ng.so
-#%%{_libdir}/libdrop_ambient.so
-%attr(0644,root,root) %{_datadir}/aclocal/cap-ng.m4
+%{_libdir}/libdrop_ambient.so
+%{_datadir}/aclocal/cap-ng.m4
 %{_libdir}/pkgconfig/libcap-ng.pc
 
 %files python3
 %attr(755,root,root) %{python3_sitearch}/*
-%{python3_sitearch}/capng.py*
 
 %files utils
 %license COPYING
-%attr(0755,root,root) %{_bindir}/*
-%attr(0644,root,root) %{_mandir}/man8/*
+%{_bindir}/*
+%{_mandir}/man8/*
